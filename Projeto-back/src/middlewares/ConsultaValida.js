@@ -24,6 +24,31 @@ const ConsultaValida = async(req, resp, next) => {
     else if(isPast(new Date(data)))
         return resp.status(400).json({erro: 'Escolha uma data no futuro'})
     else{
+        //validar se existe consulta no mesmo dia e horário
+        //criar variavel vazia
+
+        let existe
+
+        //validar se ao atualizar ja existe consulta na data
+        if(req.params.id){
+            existe = await ConsultaModel
+                .findOne({'data': {'$eq': new Date(data)},
+                //operador not exist --> $ne
+                //ne --> id diferente de QUALQUER coisa no parametro id
+                //ele irá comparar com dos outros ids das consultas da collection
+                '_id':{'$ne':resp.params.id}
+            })
+        }
+        else{
+            //buscar na minha collection a consulta pela mesma data
+            //vou usar o campo da data para validação
+            existe = await ConsultaModel.findOne({'data':{$eq: new Date(data)}})
+        }
+
+        if(existe){
+            return resp.status(400).json({erro: 'Já existe consulta para essa data'});
+        }
+
         next();
     }
 }

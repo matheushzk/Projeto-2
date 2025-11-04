@@ -14,4 +14,10 @@ const ConsultaValida = require('../middlewares/ConsultaValida');
 //post para receber
 rota.post('/', ConsultaValida, ConsultaController.criar);
 
+rota.put('/:id', ConsultaValida, ConsultaController.atualizar)
+
+rota.get('/listar/todas', ConsultaController.listar); //era pra ser /listar/todas, mas ta dando erro --> o erro era a ordem do /listar/:id
+
+rota.get('/listar/:id', ConsultaController.consulta);
+
 module.exports = rota

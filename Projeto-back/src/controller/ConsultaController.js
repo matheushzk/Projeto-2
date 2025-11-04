@@ -17,6 +17,48 @@ class ConsultaController{
                 return resp.status(500).json(erro)
             })
     }
+
+    async atualizar(req, resp){
+        //resgatar os dados da consulta do mongo
+        //buscar uma consulta pelo id
+        //vamos passar no body da req as solicitações de alteração
+        //o próprio mongo identifica se a collection foi atualizada
+        //a propriedade new: true --> sempre vai me retornar os dados da consulta atualizado na resposta
+        //devolvendo para o servidor uma resposta com a consulta atualizada
+
+        await ConsultaModel.findByIdAndUpdate({'_id':req.params.id}, req.body, {new: true})
+            .then(resposta =>{
+                    return resp.status(200).json(resposta);
+            })
+            .catch(erro =>{
+                return resp.status(500).json(erro);
+            })
+    }
+
+    async listar(req, resp){
+    
+        //operador in --> estiver entre os tipos que existem na minha collection
+        await ConsultaModel.find({'tipo': {'$in': req.body.tipo} })
+            .sort('data')
+            .then(resposta =>{
+                    return resp.status(200).json(resposta);
+            })
+            .catch(erro =>{
+                return resp.status(500).json(erro);
+            })
+    }
+
+    async consulta(req, resp){
+
+    //operador in --> estiver entre os tipos que existem na minha collection
+    await ConsultaModel.findById(req.params.id)
+        .then(resposta =>{
+                return resp.status(200).json(resposta);
+        })
+        .catch(erro =>{
+            return resp.status(500).json(erro);
+        })
+    }
 }
 
 module.exports = new ConsultaController();
