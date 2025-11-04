@@ -18,6 +18,14 @@ rota.put('/:id', ConsultaValida, ConsultaController.atualizar)
 
 rota.get('/listar/todas', ConsultaController.listar); //era pra ser /listar/todas, mas ta dando erro --> o erro era a ordem do /listar/:id
 
+rota.get('/filtrar/atrasadas', ConsultaController.atrasadas);
+
+rota.get('/filtrar/hoje', ConsultaController.consultasHoje);
+
+rota.put('/:id/:termino', ConsultaController.concluida);
+
+rota.delete('/deletar/:id', ConsultaController.deletar);
+
 rota.get('/listar/:id', ConsultaController.consulta);
 
 module.exports = rota

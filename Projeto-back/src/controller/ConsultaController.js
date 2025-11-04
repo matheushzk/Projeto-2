@@ -1,4 +1,7 @@
 const ConsultaModel = require('../model/ConsultaModel');
+const hoje = new Date();
+
+const {startOfDay, endOfDay} = require('date-fns');
 
 //criar uma classe para que toda a regra seja implamentada dnetro dela
 //quando eu quiser chmar uma função será necessáro fazer a chanada di nome da classe.nomedafuncao
@@ -52,6 +55,59 @@ class ConsultaController{
 
     //operador in --> estiver entre os tipos que existem na minha collection
     await ConsultaModel.findById(req.params.id)
+        .then(resposta =>{
+                return resp.status(200).json(resposta);
+        })
+        .catch(erro =>{
+            return resp.status(500).json(erro);
+        })
+    }
+
+    async deletar(req, resp){
+
+        await ConsultaModel.deleteOne({'_id':req.params.id})
+        .then(resposta =>{
+                return resp.status(200).json(resposta);
+        })
+        .catch(erro =>{
+            return resp.status(500).json(erro);
+        })
+    }
+
+    async concluida(req, resp){
+
+        await ConsultaModel.findByIdAndUpdate({'_id':req.params.id}, 
+            {'termino': req.params.termino},
+            {new: true}
+        )
+        .then(resposta =>{
+                return resp.status(200).json(resposta);
+        })
+        .catch(erro =>{
+            return resp.status(500).json(erro);
+        })
+    }
+
+    async atrasadas(req, resp){
+        //operador $lt --> less than --> menor que
+        await ConsultaModel.find({'data':{'$lt': hoje}}, {'termino': false})
+        .sort('data')
+        .then(resposta =>{
+                return resp.status(200).json(resposta);
+        })
+        .catch(erro =>{
+            return resp.status(500).json(erro);
+        })
+    }
+
+    async consultasHoje(req, resp){
+        //operador $lt --> less than --> menor que
+        await ConsultaModel.find(
+            //operador $gte --> grand than equals --> maior que
+            //operador $lt
+            {'data':{'$gte': startOfDay(hoje), '$lte': endOfDay(hoje)}}
+        )
+        .sort('data')
         .then(resposta =>{
                 return resp.status(200).json(resposta);
         })
