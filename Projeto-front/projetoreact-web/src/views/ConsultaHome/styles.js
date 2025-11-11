@@ -3,6 +3,10 @@ import styled from 'styled-components'
 //exportar uma constante Container que vai receber de styled uma div
 export const Container = styled.div`
     width: 100%;
+    button{
+        background: none;
+        border: none;
+    }
 `
 
 export const AreaFiltro = styled.div`
@@ -11,4 +15,27 @@ export const AreaFiltro = styled.div`
     flex-wrap: wrap;
     justify-content: space-around;
     margin-top: 30px;
+`
+
+export const Conteudo = styled.div`
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+`
+
+export const Titulo = styled.div`
+    wdith: 100%;
+    border-bottom: 1px solid #22B14C;
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+
+    h3{
+        color: #22B14C;
+        position: relative;
+        top: 30px;
+        background: #FFF;
+        padding: 0 20px;
+    }
 `
